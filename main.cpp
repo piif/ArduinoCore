@@ -1,7 +1,6 @@
 #include <Arduino.h>
 
-int main(void)
-{
+int main(void) {
 	init();
 
 #if defined(USBCON)
@@ -18,3 +17,6 @@ int main(void)
 	return 0;
 }
 
+extern "C" void __cxa_pure_virtual() {
+	while (1);
+}
