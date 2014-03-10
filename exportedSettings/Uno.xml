@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdtprojectproperties>
+<section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.IncludePaths">
+	<language name="s,S,asm">
+	</language>
+	<language name="C Source File">
+		<includepath workspace_path="true">/${ProjName}</includepath>
+		<includepath workspace_path="true">/ArduinoCore</includepath>
+		<includepath workspace_path="true">/ArduinoCore/variants/standard</includepath>
+		<includepath workspace_path="true">/ArduinoLibs</includepath>
+		<includepath workspace_path="true">/ArduinoTools</includepath>
+	</language>
+	<language name="C++ Source File">
+		<includepath workspace_path="true">/${ProjName}</includepath>
+		<includepath workspace_path="true">/ArduinoCore</includepath>
+		<includepath workspace_path="true">/ArduinoCore/variants/standard</includepath>
+		<includepath workspace_path="true">/ArduinoLibs</includepath>
+		<includepath workspace_path="true">/ArduinoTools</includepath>
+	</language>
+</section>
+
+<section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.Macros">
+	<language name="s,S,asm">
+	</language>
+	<language name="C Source File">
+		<macro>
+		<name>ARDUINO</name><value>105</value>
+		</macro>
+	</language>
+	
+	<language name="C++ Source File">
+		<macro>
+		<name>ARDUINO</name><value>105</value>
+		</macro>
+	</language>
+</section>
+</cdtprojectproperties>
