@@ -24,6 +24,7 @@
 #define HardwareSerial_h
 
 #include <inttypes.h>
+#include <avr/io.h>
 
 #include "Stream.h"
 
