@@ -1,6 +1,8 @@
 CORE_DIR := $(dir $(firstword ${MAKEFILE_LIST}))/../
 
-MAIN_NAME := $(shell basename ${PROJECT_DIR})
+ifeq (${MAIN_NAME},)
+	MAIN_NAME := $(shell basename ${PROJECT_DIR})
+endif
 # "=" instead of ":=" because TARGET_DIR will be defined later
 # => must not expand variable now
 BIN_PATH = ${TARGET_DIR}${MAIN_NAME}.elf

@@ -67,7 +67,7 @@ CXXFLAGS := -I${PROJECT_DIR} \
 CFLAGS := -std=gnu99 ${CXXFLAGS}
 
 LDFLAGS := ${LD_FLAGS} -mmcu=${TARGET_BUILD_MCU} \
-	$(foreach dep,${DEPENDENCIES},-L${dep}/target/${Target} -l$(shell basename ${dep}))
+	$(foreach dep,${DEPENDENCIES} ${CORE_DIR},-L${dep}/target/${Target} -l$(shell basename ${dep}))
 
 # -h = dump headers
 # -S = dump assembly code
@@ -143,6 +143,11 @@ ${TARGET_DIR}%.o: %.ino
 assembly: $(basename ${BIN_PATH}).lss
 
 %.lss: %.elf
+ifeq (${WITH_ASSEMBLY},yes)
+	${OBJDUMP} ${OBJDUMPFLAGS} $< > $@
+endif
+
+%.lss: %.a
 ifeq (${WITH_ASSEMBLY},yes)
 	${OBJDUMP} ${OBJDUMPFLAGS} $< > $@
 endif
