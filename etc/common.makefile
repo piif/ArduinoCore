@@ -60,7 +60,7 @@ CXXFLAGS := -I${PROJECT_DIR} \
 	-I${CORE_DIR}src/variants/${TARGET_BUILD_VARIANT} \
 	-Wall -Os -fpack-struct -fshort-enums -ffunction-sections -fdata-sections \
 	-funsigned-char -funsigned-bitfields \
-	$(foreach dep,${DEPENDENCIES},-I ${dep}) \
+	$(foreach dep,${DEPENDENCIES},-I${dep}) \
 	-DARDUINO=${CORE_VERSION} -DNO_ARDUINO_IDE \
 	${TARGET_CFLAGS}
 
