@@ -30,24 +30,24 @@ ifeq (,${ARDDUDE_PATH})
 endif
 CONSOLE=${ARDDUDE_PATH}etc/ad.sh
 
-# deduce every target specific variable
-## Target = Uno / target = uno / TARGET = UNO
+# deduce every target specific variable, in CamelCase, lowercase and UPPERCASE formats
+## TARGET_CC = Uno / TARGET_LC = uno / TARGET_UC = UNO
 
-Target := ${TARGET}
-target := $(shell echo ${TARGET} | tr 'A-Z' 'a-z')
-override TARGET := $(shell echo ${TARGET} | tr 'a-z' 'A-Z')
+TARGET_CC := ${TARGET}
+TARGET_LC := $(shell echo ${TARGET} | tr 'A-Z' 'a-z')
+TARGET_UC := $(shell echo ${TARGET} | tr 'a-z' 'A-Z')
 
-TARGET_NAME := ${CONFIG_TARGET_${TARGET}_NAME}
-TARGET_UPLOAD_PROTOCOL := ${CONFIG_TARGET_${TARGET}_UPLOAD_PROTOCOL}
-TARGET_UPLOAD_MAXIMUM_SIZE := ${CONFIG_TARGET_${TARGET}_UPLOAD_MAXIMUM_SIZE}
-TARGET_UPLOAD_SPEED := ${CONFIG_TARGET_${TARGET}_UPLOAD_SPEED}
-TARGET_BUILD_MCU := ${CONFIG_TARGET_${TARGET}_BUILD_MCU}
+TARGET_NAME := ${CONFIG_TARGET_${TARGET_UC}_NAME}
+TARGET_UPLOAD_PROTOCOL := ${CONFIG_TARGET_${TARGET_UC}_UPLOAD_PROTOCOL}
+TARGET_UPLOAD_MAXIMUM_SIZE := ${CONFIG_TARGET_${TARGET_UC}_UPLOAD_MAXIMUM_SIZE}
+TARGET_UPLOAD_SPEED := ${CONFIG_TARGET_${TARGET_UC}_UPLOAD_SPEED}
+TARGET_BUILD_MCU := ${CONFIG_TARGET_${TARGET_UC}_BUILD_MCU}
 TARGET_BUILD_MCU_SHORT := ${TARGET_BUILD_MCU:atmega%=m%}
-TARGET_BUILD_F_CPU := ${CONFIG_TARGET_${TARGET}_BUILD_F_CPU}
-TARGET_BUILD_VID := ${CONFIG_TARGET_${TARGET}_BUILD_VID}
-TARGET_BUILD_PID := ${CONFIG_TARGET_${TARGET}_BUILD_PID}
-TARGET_BUILD_CORE := ${CONFIG_TARGET_${TARGET}_BUILD_CORE}
-TARGET_BUILD_VARIANT := ${CONFIG_TARGET_${TARGET}_BUILD_VARIANT}
+TARGET_BUILD_F_CPU := ${CONFIG_TARGET_${TARGET_UC}_BUILD_F_CPU}
+TARGET_BUILD_VID := ${CONFIG_TARGET_${TARGET_UC}_BUILD_VID}
+TARGET_BUILD_PID := ${CONFIG_TARGET_${TARGET_UC}_BUILD_PID}
+TARGET_BUILD_CORE := ${CONFIG_TARGET_${TARGET_UC}_BUILD_CORE}
+TARGET_BUILD_VARIANT := ${CONFIG_TARGET_${TARGET_UC}_BUILD_VARIANT}
 
 ##$(error TARGET = ${TARGET}, TARGET_BUILD_MCU = ${TARGET_BUILD_MCU})
 
@@ -67,7 +67,7 @@ CXXFLAGS := -I${PROJECT_DIR} \
 CFLAGS := -std=gnu99 ${CXXFLAGS}
 
 LDFLAGS := ${LD_FLAGS} -mmcu=${TARGET_BUILD_MCU} \
-	$(foreach dep,${DEPENDENCIES} ${CORE_DIR},-L${dep}/target/${Target} -l$(shell basename ${dep}))
+	$(foreach dep,${DEPENDENCIES} ${CORE_DIR},-L${dep}/target/${TARGET_CC} -l$(shell basename ${dep}))
 
 # -h = dump headers
 # -S = dump assembly code
@@ -79,7 +79,7 @@ FLASHFLAGS := -R .eeprom -R .fuse -R .lock -R .signature -O ihex
 EEPROMFLAGS := -j .eeprom --no-change-warnings --change-section-lma .eeprom=0 -O ihex
 
 # find intermediate files
-TARGET_DIR := ${PROJECT_DIR}/target/${Target}/
+TARGET_DIR := ${PROJECT_DIR}/target/${TARGET_CC}/
 DEPS := $(foreach src,${ALL_SOURCES},${TARGET_DIR}$(basename ${src}).d)
 OBJS := $(foreach src,${ALL_SOURCES},${TARGET_DIR}$(basename ${src}).o)
 
@@ -89,7 +89,7 @@ config:
 ifeq (${TARGET},)
 	$(error *** TARGET=... is mandatory ***)
 endif
-ifeq (,$(findstring ${target},${TARGETS}))
+ifeq (,$(findstring ${TARGET_LC},${TARGETS}))
     $(error *** Unknown target ${TARGET} ***)
 endif
 
@@ -97,7 +97,7 @@ dep: config ${DEPENDENCIES} ${DEPS}
 
 ${DEPENDENCIES}: __FORCE__
 	@echo "*** Making dependency $@ ***"
-	${MAKE} -C $@ TARGET=${Target}
+	${MAKE} -C $@ TARGET=${TARGET_CC}
 
 __FORCE__:
 
@@ -111,7 +111,7 @@ ${TARGET_DIR}%.d: %.cpp
 
 ${TARGET_DIR}%.d: %.ino
 	@mkdir -p $(dir $@)
-	${CXX} ${CXXFLAGS} -MM -MP -MF $@ -MT ${@:%.d=%.o} $<
+	${CXX} ${CXXFLAGS} -x c++ -MM -MP -MF $@ -MT ${@:%.d=%.o} $<
 
 lib: config ${BIN_PATH}
 
