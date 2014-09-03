@@ -9,7 +9,7 @@ endif
 CORE_DIR := $(abspath $(realpath $(dir $(lastword ${MAKEFILE_LIST}))/..))/
 
 # get per target config
-${CORE_DIR}target/boards.config: ${CORE_DIR}src/boards.txt ${CORE_DIR}src/version.txt
+${CORE_DIR}target/boards.config: ${CORE_DIR}etc/boardConfigs.sh ${CORE_DIR}src/boards.txt ${CORE_DIR}src/version.txt
 	@echo "Generating config target file"
 	${CORE_DIR}etc/boardConfigs.sh > $@
 
@@ -89,8 +89,10 @@ config:
 ifeq (${TARGET},)
 	$(error *** TARGET=... is mandatory ***)
 endif
-ifeq (,$(findstring ${TARGET_LC},${TARGETS}))
-    $(error *** Unknown target ${TARGET} ***)
+ifeq (${BOARD_CONFIG},OK)
+	ifeq (,$(findstring ${TARGET_LC},${TARGETS}))
+		$(error *** Unknown target ${TARGET} ***)
+	endif
 endif
 
 dep: config ${DEPENDENCIES} ${DEPS}

@@ -34,3 +34,10 @@ grep -e \.name= -e \.upload\..*= -e build\..*= $INPUT \
 | while read name value ; do
 	echo "CONFIG_TARGET_$(echo $name | tr 'a-z.' 'A-Z_') := $value"
 done
+
+cat <<EOF
+
+BOARD_CONFIGS=OK
+## end of generated file
+EOF
+
