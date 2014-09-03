@@ -9,7 +9,7 @@ endif
 CORE_DIR := $(abspath $(realpath $(dir $(lastword ${MAKEFILE_LIST}))/..))/
 
 # get per target config
-${CORE_DIR}target/boards.config: ${CORE_DIR}etc/boardConfigs.sh ${CORE_DIR}src/boards.txt ${CORE_DIR}src/version.txt
+${CORE_DIR}target/boards.config: ${CORE_DIR}etc/boardConfigs.sh $(wildcard ${CORE_DIR}src/boards/*) ${CORE_DIR}src/version.txt
 	@echo "Generating config target file"
 	${CORE_DIR}etc/boardConfigs.sh > $@
 
