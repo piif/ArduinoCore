@@ -15,7 +15,7 @@ avrtarget/avrdude/NoSigCheck=false
 avrtarget/avrdude/NoVerify=false
 avrtarget/avrdude/NoWrite=false
 avrtarget/avrdude/OtherOptions=
-avrtarget/avrdude/ProgrammerID=programmerconfig.9
+avrtarget/avrdude/ProgrammerID=programmerconfig.1
 avrtarget/avrdude/UseCounter=false
 avrtarget/avrdude/WriteEEPROM=false
 avrtarget/avrdude/WriteFlash=true
@@ -57,7 +57,7 @@ avrtarget/de.innot.avreclipse.configuration.app.release.599339463.1512248181.145
 avrtarget/de.innot.avreclipse.configuration.app.release.599339463.1512248181.1454224575/avrdude/NoVerify=false
 avrtarget/de.innot.avreclipse.configuration.app.release.599339463.1512248181.1454224575/avrdude/NoWrite=false
 avrtarget/de.innot.avreclipse.configuration.app.release.599339463.1512248181.1454224575/avrdude/OtherOptions=
-avrtarget/de.innot.avreclipse.configuration.app.release.599339463.1512248181.1454224575/avrdude/ProgrammerID=programmerconfig.4
+avrtarget/de.innot.avreclipse.configuration.app.release.599339463.1512248181.1454224575/avrdude/ProgrammerID=programmerconfig.1
 avrtarget/de.innot.avreclipse.configuration.app.release.599339463.1512248181.1454224575/avrdude/UseCounter=false
 avrtarget/de.innot.avreclipse.configuration.app.release.599339463.1512248181.1454224575/avrdude/WriteEEPROM=false
 avrtarget/de.innot.avreclipse.configuration.app.release.599339463.1512248181.1454224575/avrdude/WriteFlash=true
@@ -78,7 +78,7 @@ avrtarget/de.innot.avreclipse.configuration.app.release.599339463.1512248181/avr
 avrtarget/de.innot.avreclipse.configuration.app.release.599339463.1512248181/avrdude/NoVerify=false
 avrtarget/de.innot.avreclipse.configuration.app.release.599339463.1512248181/avrdude/NoWrite=false
 avrtarget/de.innot.avreclipse.configuration.app.release.599339463.1512248181/avrdude/OtherOptions=
-avrtarget/de.innot.avreclipse.configuration.app.release.599339463.1512248181/avrdude/ProgrammerID=programmerconfig.4
+avrtarget/de.innot.avreclipse.configuration.app.release.599339463.1512248181/avrdude/ProgrammerID=programmerconfig.2
 avrtarget/de.innot.avreclipse.configuration.app.release.599339463.1512248181/avrdude/UseCounter=false
 avrtarget/de.innot.avreclipse.configuration.app.release.599339463.1512248181/avrdude/WriteEEPROM=false
 avrtarget/de.innot.avreclipse.configuration.app.release.599339463.1512248181/avrdude/WriteFlash=true
