@@ -70,6 +70,7 @@ CFLAGS := -std=gnu99 ${CXXFLAGS}
 
 LDFLAGS := ${LD_FLAGS} -mmcu=${TARGET_BUILD_MCU} \
 	$(foreach dep,${DEPENDENCIES} ${CORE_DIR},-L${dep}/target/${TARGET_CC} -l$(shell basename ${dep}))
+DEP_LIBS := $(foreach dep,${DEPENDENCIES} ${CORE_DIR},${dep}/target/${TARGET_CC}/lib$(shell basename ${dep}).a)
 
 # -h = dump headers
 # -S = dump assembly code
@@ -123,7 +124,8 @@ lib: config ${BIN_PATH}
 	${AR} -r $@ ${OBJS}
 
 bin: config ${BIN_PATH}
-
+ 
+# TODO : ${DEP_LIBS} fails because confuse %.a rule with lib rules ...
 %.elf: ${OBJS}
 	${CXX} -Wl,-Map,${@:%.elf=%.map},--cref -mrelax -Wl,--gc-sections -o $@ ${OBJS} ${LDFLAGS}
 
