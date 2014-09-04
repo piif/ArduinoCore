@@ -1,4 +1,4 @@
-CORE_DIR ?= $(dir $(firstword ${MAKEFILE_LIST}))/../
+CORE_DIR ?= $(abspath $(realpath $(dir $(firstword ${MAKEFILE_LIST}))/../))/
 ##$(info *** bin.makefile => CORE_DIR=${CORE_DIR} ***)
 
 # TODO : if MAIN_PATH, deduce path relative to project path
@@ -24,6 +24,7 @@ ifeq (${ALL_SOURCES},)
 	ALL_SOURCES := ${MAIN_SOURCE}
 endif
 
-all: assembly size upload
+all: assembly size
+#upload
 
 include ${CORE_DIR}etc/common.makefile
