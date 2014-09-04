@@ -6,24 +6,26 @@ endif
 
 # we are in .../ArduinoCore/etc/MakefileCommon
 # deduce absolute path of .../ArduinoCore
-CORE_DIR := $(abspath $(realpath $(dir $(lastword ${MAKEFILE_LIST}))/..))/
+CORE_DIR ?= $(abspath $(realpath $(dir $(lastword ${MAKEFILE_LIST}))/..))/
+##$(info *** common.makefile => CORE_DIR=${CORE_DIR} ***)
 
 # get per target config
 ${CORE_DIR}target/boards.config: ${CORE_DIR}src/boards.txt ${CORE_DIR}src/version.txt
 	@echo "Generating config target file"
+	mkdir -p ${CORE_DIR}target
 	${CORE_DIR}etc/boardConfigs.sh > $@
 
 -include ${CORE_DIR}target/boards.config
 
 # set toolchain binaries
-CC=avr-gcc
-CXX=avr-g++
-AR=avr-ar
-FLASH=avr-objcopy
-EEPROM=avr-objcopy
-OBJDUMP=avr-objdump
-SIZE=avr-size
-UPLOAD=avrdude
+CC=${AVR_TOOLS}avr-gcc
+CXX=${AVR_TOOLS}avr-g++
+AR=${AVR_TOOLS}avr-ar
+FLASH=${AVR_TOOLS}avr-objcopy
+EEPROM=${AVR_TOOLS}avr-objcopy
+OBJDUMP=${AVR_TOOLS}avr-objdump
+SIZE=${AVR_TOOLS}avr-size
+UPLOAD=${AVR_TOOLS}avrdude
 
 ifeq (,${ARDDUDE_PATH})
 	ARDDUDE_PATH := ${CORE_DIR}../arddude/
@@ -55,7 +57,7 @@ TARGET_BUILD_VARIANT := ${CONFIG_TARGET_${TARGET_UC}_BUILD_VARIANT}
 TARGET_CFLAGS := -mmcu=${TARGET_BUILD_MCU} -DF_CPU=${TARGET_BUILD_F_CPU} -DUSB_VID=${TARGET_BUILD_VID} -DUSB_PID=${TARGET_BUILD_PID}
 TARGET_UPLOADFLAGS := -p${TARGET_BUILD_MCU_SHORT} -c${TARGET_UPLOAD_PROTOCOL} -b${TARGET_UPLOAD_SPEED}
 
-CXXFLAGS := -I${PROJECT_DIR} \
+CXXFLAGS := -DPIF_TOOL_CHAIN -I${PROJECT_DIR} \
 	-I${CORE_DIR}src/cores/${TARGET_BUILD_CORE} \
 	-I${CORE_DIR}src/variants/${TARGET_BUILD_VARIANT} \
 	-Wall -Os -fpack-struct -fshort-enums -ffunction-sections -fdata-sections \
@@ -97,7 +99,7 @@ dep: config ${DEPENDENCIES} ${DEPS}
 
 ${DEPENDENCIES}: __FORCE__
 	@echo "*** Making dependency $@ ***"
-	${MAKE} -C $@ TARGET=${TARGET_CC}
+	${MAKE} -C $@ PROJECT_DIR=$@ TARGET=${TARGET_CC}
 
 __FORCE__:
 

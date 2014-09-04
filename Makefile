@@ -1,6 +1,7 @@
 # the directory this project is in
 # must be defined for generic makefile to work
 export PROJECT_DIR := $(dir $(realpath ${MAKEFILE_LIST}))
+##$(info *** Makefile => PROJECT_DIR=${PROJECT_DIR} ***)
 
 # other arduino librairies project pathes this project depends on
 export DEPENDENCIES :=
