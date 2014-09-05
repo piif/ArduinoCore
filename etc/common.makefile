@@ -26,6 +26,7 @@ EEPROM=${AVR_TOOLS}avr-objcopy
 OBJDUMP=${AVR_TOOLS}avr-objdump
 SIZE=${AVR_TOOLS}avr-size
 UPLOAD=${AVR_TOOLS}avrdude
+UPLOAD_CONFFILE?=$(wildcard ${AVR_TOOLS}../etc/avrdude.conf)
 
 ifeq (,${ARDDUDE_PATH})
 	ARDDUDE_PATH := ${CORE_DIR}../arddude/
@@ -57,7 +58,8 @@ TARGET_BUILD_VARIANT := ${CONFIG_TARGET_${TARGET_UC}_BUILD_VARIANT}
 TARGET_CFLAGS := -mmcu=${TARGET_BUILD_MCU} -DF_CPU=${TARGET_BUILD_F_CPU} -DUSB_VID=${TARGET_BUILD_VID} -DUSB_PID=${TARGET_BUILD_PID}
 TARGET_UPLOADFLAGS := -p${TARGET_BUILD_MCU_SHORT} -c${TARGET_UPLOAD_PROTOCOL} -b${TARGET_UPLOAD_SPEED}
 
-CXXFLAGS := -DPIF_TOOL_CHAIN -I${PROJECT_DIR} \
+CXXFLAGS := -DPIF_TOOL_CHAIN -DDEFAULT_BAUDRATE=${TARGET_UPLOAD_SPEED} \
+	-I${PROJECT_DIR} \
 	-I${CORE_DIR}src/cores/${TARGET_BUILD_CORE} \
 	-I${CORE_DIR}src/variants/${TARGET_BUILD_VARIANT} \
 	-Wall -Os -fpack-struct -fshort-enums -ffunction-sections -fdata-sections \
@@ -78,6 +80,9 @@ DEP_LIBS := $(foreach dep,${DEPENDENCIES} ${CORE_DIR},${dep}/target/${TARGET_CC}
 OBJDUMPFLAGS := -h -S -C
 SIZEFLAGS := --format=avr --mcu=${TARGET_BUILD_MCU}
 UPLOADFLAGS := ${TARGET_UPLOADFLAGS} -P${UPLOAD_DEVICE}
+ifneq (${UPLOAD_CONFFILE},)
+	UPLOADFLAGS := ${UPLOADFLAGS} -C${UPLOAD_CONFFILE}
+endif
 FLASHFLAGS := -R .eeprom -R .fuse -R .lock -R .signature -O ihex
 EEPROMFLAGS := -j .eeprom --no-change-warnings --change-section-lma .eeprom=0 -O ihex
 
