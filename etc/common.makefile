@@ -173,9 +173,7 @@ ifeq (${WITH_EEPROM},yes)
 endif
 
 upload: ${BIN_PATH:%.elf=%.hex}
-ifeq (${WITH_UPLOAD},yes)
 	${UPLOAD} ${UPLOADFLAGS} -Uflash:w:$<:a
-endif
 
 console: ${BIN_PATH:%.elf=%.hex}
 	${CONSOLE} ${CONSOLEFLAGS} ${UPLOAD} ${UPLOADFLAGS} -Uflash:w:$<:a
