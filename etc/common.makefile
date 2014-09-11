@@ -56,7 +56,7 @@ TARGET_BUILD_VARIANT := ${CONFIG_TARGET_${TARGET_UC}_BUILD_VARIANT}
 
 # deduce flags
 TARGET_CFLAGS := -mmcu=${TARGET_BUILD_MCU} -DF_CPU=${TARGET_BUILD_F_CPU} -DUSB_VID=${TARGET_BUILD_VID} -DUSB_PID=${TARGET_BUILD_PID}
-TARGET_UPLOADFLAGS := -p${TARGET_BUILD_MCU_SHORT} -c${TARGET_UPLOAD_PROTOCOL} -b${TARGET_UPLOAD_SPEED}
+TARGET_UPLOADFLAGS := -p${TARGET_BUILD_MCU_SHORT} -c${TARGET_UPLOAD_PROTOCOL} -b${TARGET_UPLOAD_SPEED} -D
 
 CXXFLAGS := -DPIF_TOOL_CHAIN -DDEFAULT_BAUDRATE=${TARGET_UPLOAD_SPEED} \
 	-I${PROJECT_DIR} \
@@ -177,7 +177,9 @@ ifeq (${WITH_EEPROM},yes)
 	${EEPROM} ${EEPROMFLAGS} $< $@
 endif
 
-upload: ${BIN_PATH:%.elf=%.hex}
+hex: ${BIN_PATH:%.elf=%.hex}
+
+upload: hex
 	${UPLOAD} ${UPLOADFLAGS} -Uflash:w:$<:a
 
 console: ${BIN_PATH:%.elf=%.hex}
@@ -189,4 +191,4 @@ clean:
 cleanall:
 	rm -rf ${PROJECT_DIR}target/*
 
-.PHONY: clean cleanall config dep bin lib assembly size upload
+.PHONY: clean cleanall config dep bin lib hex assembly size upload

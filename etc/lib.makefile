@@ -18,7 +18,7 @@ CPP_SOURCES := $(shell find . ${EXCLUDES} -name examples -prune , -name "*.cpp")
 ASM_SOURCES := $(shell find . ${EXCLUDES} -name examples -prune , -name "*.S")
 ALL_SOURCES := ${C_SOURCES} ${CPP_SOURCES} ${ASM_SOURCES}
 
-OBJS := ${C_SOURCES:%.c=%.o} ${CPP_SOURCES:%.cpp=%.o} ${ASM_SOURCES:%.S=%.o}
+##OBJS := ${C_SOURCES:%.c=%.o} ${CPP_SOURCES:%.cpp=%.o} ${ASM_SOURCES:%.S=%.o}
 
 all: assembly size
 
