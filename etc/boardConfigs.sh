@@ -16,6 +16,16 @@
 # CONFIG_UNO_UPLOAD_PROTOCOL=arduino
 # ...
 
+# + hardcoded choice for multi cpu platforms like mega :
+# diecimila.menu.cpu.atmega328.build.mcu=atmega328p
+# nano.menu.cpu.atmega328.build.mcu=atmega328p
+# mega.menu.cpu.atmega2560.build.mcu=atmega2560
+# mini.menu.cpu.atmega328.build.mcu=atmega328p
+# bt.menu.cpu.atmega328.build.mcu=atmega328p
+# lilypad.menu.cpu.atmega328.build.mcu=atmega328p
+# pro.menu.cpu.16MHzatmega328.build.mcu=atmega328p
+# atmegang.menu.cpu.atmega168.build.mcu=atmega168
+
 HERE=$(cd $(dirname $0) ; /bin/pwd)
 MAIN_DIR=$(dirname $HERE)
 
@@ -30,6 +40,15 @@ targets=$( grep -h -e \.name= $INPUT | cut -d . -f 1 )
 echo "TARGETS := " $targets
 
 grep -h -e \.name= -e \.upload\..*= -e build\..*= $INPUT \
+| sed \
+  -e s/diecimila.menu.cpu.atmega328/diecimila/ \
+  -e s/nano.menu.cpu.atmega328/nano/ \
+  -e s/mega.menu.cpu.atmega2560/mega/ \
+  -e s/mini.menu.cpu.atmega328/mini/ \
+  -e s/bt.menu.cpu.atmega328/bt/ \
+  -e s/lilypad.menu.cpu.atmega328/lilypad/ \
+  -e s/pro.menu.cpu.16MHzatmega328/pro/ \
+  -e s/atmegang.menu.cpu.atmega168/atmegang/ \
 | tr '=' ' ' \
 | while read name value ; do
 	echo "CONFIG_TARGET_$(echo $name | tr 'a-z.' 'A-Z_') := $value"
