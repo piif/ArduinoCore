@@ -1,4 +1,3 @@
-
 # calling project dir must be defined
 ifeq (,${PROJECT_DIR})
   $(error *** PROJECT_DIR must be defined by caller)
@@ -61,6 +60,10 @@ ifeq (${CONFIG_TARGET_${TARGET_UC}_UPLOAD_WAIT_FOR_UPLOAD_PORT},true)
 	CONSOLEFLAGS := -r
 endif
 
+ifeq (${STANDARD},)
+	STANDARD := -std=gnu99
+endif
+
 CXXFLAGS := -DPIF_TOOL_CHAIN -DDEFAULT_BAUDRATE=${TARGET_UPLOAD_SPEED} \
 	-I${PROJECT_DIR} \
 	-I${CORE_DIR}src/cores/${TARGET_BUILD_CORE} \
@@ -69,12 +72,12 @@ CXXFLAGS := -DPIF_TOOL_CHAIN -DDEFAULT_BAUDRATE=${TARGET_UPLOAD_SPEED} \
 	-funsigned-char -funsigned-bitfields \
 	$(foreach dep,${DEPENDENCIES},-I${dep}) \
 	-DARDUINO=${CORE_VERSION} -DNO_ARDUINO_IDE \
-	${TARGET_CFLAGS}
+	${TARGET_CFLAGS} ${STANDARD} ${USER_CFLAGS}
 
-CFLAGS := -std=gnu99 ${CXXFLAGS}
+CFLAGS := ${CXXFLAGS}
 
 LDFLAGS := ${LD_FLAGS} -mmcu=${TARGET_BUILD_MCU} \
-	$(foreach dep,${DEPENDENCIES} ${CORE_DIR},-L${dep}/target/${TARGET_CC} -l$(shell basename ${dep}))
+	$(foreach dep,${DEPENDENCIES} ${CORE_DIR},-L${dep}/target/${TARGET_CC} -l$(shell basename ${dep})) ${USER_LDFLAGS}
 DEP_LIBS := $(foreach dep,${DEPENDENCIES} ${CORE_DIR},${dep}/target/${TARGET_CC}/lib$(shell basename ${dep}).a)
 
 # -h = dump headers

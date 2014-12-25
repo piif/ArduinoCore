@@ -25,6 +25,8 @@ endif
 ifeq (${ALL_SOURCES},)
 	ALL_SOURCES := ${MAIN_SOURCE}
 endif
+#$(info *** bin.makefile => MAIN_SOURCE=${MAIN_SOURCE} ***)
+#$(info *** bin.makefile => ALL_SOURCES=${ALL_SOURCES} ***)
 
 all: hex assembly size
 #upload
