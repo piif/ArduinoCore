@@ -60,9 +60,9 @@ ifeq (${CONFIG_TARGET_${TARGET_UC}_UPLOAD_WAIT_FOR_UPLOAD_PORT},true)
 	CONSOLEFLAGS := -r
 endif
 
-ifeq (${STANDARD},)
-	STANDARD := -std=gnu99
-endif
+#ifeq (${STANDARD},)
+#	STANDARD := -std=gnu99
+#endif
 
 CXXFLAGS := -DPIF_TOOL_CHAIN -DDEFAULT_BAUDRATE=${TARGET_UPLOAD_SPEED} \
 	-I${PROJECT_DIR} \
