@@ -41,6 +41,7 @@ echo "TARGETS := " $targets
 
 grep -h -e \.name= -e \.upload\..*= -e build\..*= $INPUT \
 | sed \
+  -e 's/=\(.*\):.*/=\1/' \
   -e s/diecimila.menu.cpu.atmega328/diecimila/ \
   -e s/nano.menu.cpu.atmega328/nano/ \
   -e s/mega.menu.cpu.atmega2560/mega/ \
