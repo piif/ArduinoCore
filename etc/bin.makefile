@@ -32,3 +32,27 @@ all: hex assembly size
 #upload
 
 include ${CORE_DIR}etc/common.makefile
+
+%.elf: ${OBJS} ${DEP_LIBS}
+	${CXX} -Wl,-Map,${@:%.elf=%.map},--cref -mrelax -Wl,--gc-sections -o $@ ${OBJS} ${LDFLAGS}
+
+# TODO : howto remake libs ?
+#%.a:
+#	@echo TODO make -C $(dir $@) TARGET=${TARGET_CC}
+
+%.hex: %.elf
+	${FLASH} ${FLASHFLAGS} $< $@
+	$(eval CONSOLEFLAGS := ${CONSOLEFLAGS} -f)
+
+%.eep: %.elf
+ifeq (${WITH_EEPROM},yes)
+	${EEPROM} ${EEPROMFLAGS} $< $@
+endif
+
+hex: ${BIN_PATH:%.elf=%.hex}
+
+upload: hex
+	${UPLOAD} ${UPLOADFLAGS} -Uflash:w:$<:a
+
+console: ${BIN_PATH:%.elf=%.hex}
+	${CONSOLE} ${CONSOLEFLAGS} ${UPLOAD} ${UPLOADFLAGS} -Uflash:w:$<:a

@@ -131,14 +131,7 @@ ${TARGET_DIR}%.d: %.ino
 
 lib: config ${BIN_PATH}
 
-%.a: ${OBJS}
-	${AR} -r $@ ${OBJS}
-
 bin: config ${BIN_PATH}
- 
-# TODO : ${DEP_LIBS} fails because confuse %.a rule with lib rules ...
-%.elf: ${OBJS}
-	${CXX} -Wl,-Map,${@:%.elf=%.map},--cref -mrelax -Wl,--gc-sections -o $@ ${OBJS} ${LDFLAGS}
 
 ${TARGET_DIR}%.o: %.c
 	@mkdir -p $(dir $@)
@@ -173,23 +166,6 @@ size: ${BIN_PATH}
 ifeq (${WITH_PRINT_SIZE},yes)
 	${SIZE} ${SIZEFLAGS} $<
 endif
-
-%.hex: %.elf
-	${FLASH} ${FLASHFLAGS} $< $@
-	$(eval CONSOLEFLAGS := ${CONSOLEFLAGS} -f)
-
-%.eep: %.elf
-ifeq (${WITH_EEPROM},yes)
-	${EEPROM} ${EEPROMFLAGS} $< $@
-endif
-
-hex: ${BIN_PATH:%.elf=%.hex}
-
-upload: hex
-	${UPLOAD} ${UPLOADFLAGS} -Uflash:w:$<:a
-
-console: ${BIN_PATH:%.elf=%.hex}
-	${CONSOLE} ${CONSOLEFLAGS} ${UPLOAD} ${UPLOADFLAGS} -Uflash:w:$<:a
 
 clean:
 	rm -rf ${TARGET_DIR}

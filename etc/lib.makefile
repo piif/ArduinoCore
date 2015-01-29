@@ -23,3 +23,6 @@ ALL_SOURCES := ${C_SOURCES} ${CPP_SOURCES} ${ASM_SOURCES}
 all: assembly size
 
 include ${CORE_DIR}etc/common.makefile
+
+%.a: ${OBJS}
+	${AR} -r $@ ${OBJS}
